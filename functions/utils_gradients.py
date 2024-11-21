@@ -570,7 +570,7 @@ def create_cyclic_hsv_colormap(cycles):
     colormap_data = []
 
     for cycle in range(cycles):
-        brightness = 1 / (2 ** cycle)  # Reduce brightness by 50% each cycle
+        brightness = 1-(0.5 / ((1.5) ** cycle))  # Reduce brightness by 50% each cycle
         for h in hues:
             # Convert HSV to RGB
             r, g, b = plt.cm.hsv(h)[:3]  # Extract RGB from base HSV colormap
@@ -594,7 +594,7 @@ def matrix_to_pmap(matrix, Nv1, Nv2, cycles):
     custom_cmap = create_cyclic_hsv_colormap(cycles)
     A, B = matrix.shape
     reshaped_columns = [np.reshape(matrix[:, i], (Nv1, Nv2)) for i in range(B)]
-    fig, axs = plt.subplots(1, B+1, figsize=(B * 3, 3))  # Adjust figsize as needed
+    fig, axs = plt.subplots(1, B, figsize=(B * 3, 3))  # Adjust figsize as needed
     for i, col in enumerate(reshaped_columns):
         im=axs[i].imshow(col,cmap=custom_cmap)  
         fig.colorbar(im, ax=axs[i], orientation='vertical')
