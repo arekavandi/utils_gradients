@@ -508,7 +508,7 @@ def visualize_evaluate_embedding(embedded,Lowrank_DC,Dense_C_res,Dense_C,colorco
     print('Correlation(grad_dense vs dense_res):',np.corrcoef(temp1.flatten(),Dense_C_res.flatten())[0,1])
     print('Correlation(approx_dense vs Dense_C):',np.corrcoef(approx_dense.flatten(),Dense_C.flatten())[0,1])
     
-def matrix_to_pmap(matrix, Nv1, Nv2, cycles):
+def matrix_to_pmap_old(matrix, Nv1, Nv2, cycles):
     """
     Convert a matrix of scalar values into an RGB image representation.
     
@@ -550,5 +550,52 @@ def matrix_to_pmap(matrix, Nv1, Nv2, cycles):
     axs[-1].set_title(f'cmap')
     axs[-1].axis('off')
     plt.show()
+def create_cyclic_hsv_colormap(cycles):
+    """
+    Creates a cyclic colormap based on the HSV colormap where each cycle reduces the brightness by 50%.
 
+    Parameters:
+    - cycles: int, the number of cycles for the colormap.
 
+    Returns:
+    - colormap: LinearSegmentedColormap, the custom cyclic colormap.
+    """
+    # Number of colors per cycle
+    base_colors = 256  # Resolution of the colormap
+    total_colors = cycles * base_colors  # Total colors for the colormap
+
+    # Generate HSV values
+    hues = np.linspace(0, 1, base_colors, endpoint=False)  # Hue values across the HSV colormap
+    colormap_data = []
+
+    for cycle in range(cycles):
+        brightness = 1 / (2 ** cycle)  # Reduce brightness by 50% each cycle
+        for h in hues:
+            # Convert HSV to RGB
+            r, g, b = plt.cm.hsv(h)[:3]  # Extract RGB from base HSV colormap
+            colormap_data.append((brightness * r, brightness * g, brightness * b))
+
+    # Convert to a custom colormap
+    colormap = LinearSegmentedColormap.from_list(f'cyclic_hsv_{cycles}', colormap_data, N=total_colors)
+    return colormap
+    
+def matrix_to_pmap(matrix, Nv1, Nv2, cycles):
+        """
+    Convert a matrix of scalar values into an RGB image representation.
+    
+    Parameters:
+        matrix (numpy.ndarray): 2D array of scalar values.
+        cycles (int): Number of periodic cycles for the red and green channels.
+    
+    Returns:
+        numpy.ndarray: 3D RGB array representing the matrix visualization.
+    """
+    custom_cmap = create_cyclic_hsv_colormap(cycles)
+    A, B = matrix.shape
+    reshaped_columns = [np.reshape(matrix[:, i], (Nv1, Nv2)) for i in range(B)]
+    fig, axs = plt.subplots(1, B, figsize=(B * 3, 3))  # Adjust figsize as needed
+    for i, col in enumerate(reshaped_columns):
+        axs[i].imshow(matrix)  
+        axs[i].set_title(f'PC {i+1}')
+        axs[i].axis('off')
+    plt.show()
