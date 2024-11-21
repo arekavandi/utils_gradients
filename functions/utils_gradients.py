@@ -594,9 +594,10 @@ def matrix_to_pmap(matrix, Nv1, Nv2, cycles):
     custom_cmap = create_cyclic_hsv_colormap(cycles)
     A, B = matrix.shape
     reshaped_columns = [np.reshape(matrix[:, i], (Nv1, Nv2)) for i in range(B)]
-    fig, axs = plt.subplots(1, B, figsize=(B * 3, 3))  # Adjust figsize as needed
+    fig, axs = plt.subplots(1, B+1, figsize=(B * 3, 3))  # Adjust figsize as needed
     for i, col in enumerate(reshaped_columns):
-        axs[i].imshow(col,cmap=custom_cmap)  
+        im=axs[i].imshow(col,cmap=custom_cmap)  
+        fig.colorbar(im, ax=axs[i], orientation='vertical')
         axs[i].set_title(f'PC {i+1}')
         axs[i].axis('off')
     plt.show()
