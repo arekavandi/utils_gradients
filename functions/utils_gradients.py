@@ -570,7 +570,7 @@ def create_cyclic_hsv_colormap(cycles):
     colormap_data = []
 
     for cycle in range(cycles):
-        brightness = 1-(0.5 / ((1.5) ** cycle))  # Reduce brightness by 50% each cycle
+        brightness = 1-(cycle/cycles) # Reduce brightness by 50% each cycle
         for h in hues:
             # Convert HSV to RGB
             r, g, b = plt.cm.hsv(h)[:3]  # Extract RGB from base HSV colormap
