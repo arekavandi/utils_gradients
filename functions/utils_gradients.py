@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
 from skimage.exposure import match_histograms
 from scipy.stats import norm
+from scipy.spatial.distance import pdist, squareform
+import statistics
+
 
 
 def plot_mp_distribution_from_subset(eigenvalues,sig2,start,end,rank,N):
@@ -109,3 +112,85 @@ def density_scatter(x,y,plot_baseline=False,plot_xy=False):
         ax.plot(x,x,'--r')
     #plt.show(block=False)
     return fig,ax
+
+def second_derivative(matrix):
+    """
+    Computes the second derivative of a given matrix.
+
+    Parameters:
+    matrix (numpy.ndarray): Input matrix.
+
+    Returns:
+    numpy.ndarray: The second derivative of the matrix.
+    """
+    # Ensure the input is a numpy array
+    matrix = np.asarray(matrix)
+    
+    # Use np.gradient to compute the first derivative
+    first_derivativex = np.gradient(matrix, axis=0)
+    # Compute the second derivative from the first derivative
+    second_derivativex = np.gradient(first_derivativex, axis=0)
+
+    # Use np.gradient to compute the first derivative
+    first_derivativey = np.gradient(matrix, axis=1)
+    # Compute the second derivative from the first derivative
+    second_derivativey = np.gradient(first_derivativey, axis=1)
+    
+    return np.sum(0.5*(np.abs(second_derivativex)+np.abs(second_derivativey)))
+
+def intersect_masks(embedded,i):
+    dx,dy=embedded.shape
+    for j in range(dy):
+        temp=np.zeros((dx,1))
+        temp[np.abs(embedded[:,j]-embedded[i,j])<0.05*(np.max(embedded[:,j])-np.min(embedded[:,j]))]=1   
+        temp[i]=2
+        plt.imshow(np.reshape(temp,(Nv1,Nv2)))
+        plt.show()
+
+def intersect_visual(embedded):
+    dx,dy=embedded.shape
+    output=np.zeros((dx,1))
+    for i in range(dx):
+        mask=np.ones((dx,1))
+        for j in range(dy):
+            temp=np.zeros((dx,1))
+            temp[np.abs(embedded[:,j]-embedded[i,j])<0.05*(np.max(embedded[:,j])-np.min(embedded[:,j]))]=1
+            #plt.imshow(np.reshape(temp,(Nv1,Nv2)))
+           # plt.show()
+            mask*=temp
+        output[i]=np.sum(mask)
+    return output
+
+def intersect_me(embedded):
+    dx,dy=embedded.shape
+    output=np.zeros((dx,1))
+    for i in range(dx):
+        mask=np.ones((dx,1))
+        for j in range(dy):
+            temp=np.zeros((dx,1))
+            temp[np.abs(embedded[:,j]-embedded[i,j])<0.05*(np.max(embedded[:,j])-np.min(embedded[:,j]))]=1
+            #plt.imshow(np.reshape(temp,(Nv1,Nv2)))
+           # plt.show()
+            mask*=temp
+        output[i]=np.sum(mask)
+    return np.percentile(output.flatten(),10)
+
+def compute_distance_matrix(data):
+    """
+    Computes the pairwise distance matrix for an N x F data matrix.
+
+    Parameters:
+    data (numpy.ndarray): An N x F matrix where N is the number of points and F is the number of features.
+
+    Returns:
+    numpy.ndarray: An N x N distance matrix containing the pairwise distances among the N points.
+    """
+    # Compute the pairwise distances using pdist (which returns a condensed distance matrix)
+    condensed_dist_matrix = pdist(data, metric='euclidean')
+    
+    # Convert the condensed distance matrix to a square distance matrix
+    distance_matrix = squareform(condensed_dist_matrix)
+    
+    return distance_matrix.flatten()
+
+
