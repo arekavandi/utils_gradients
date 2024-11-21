@@ -580,7 +580,7 @@ def create_cyclic_hsv_colormap(cycles):
     return colormap
     
 def matrix_to_pmap(matrix, Nv1, Nv2, cycles):
-        """
+    """
     Convert a matrix of scalar values into an RGB image representation.
     
     Parameters:
