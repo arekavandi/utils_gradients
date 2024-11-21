@@ -400,6 +400,48 @@ def visualize_evaluate_embedding(embedded,Lowrank_DC,Dense_C_res,Dense_C,colorco
     print('Correlation(low_rank_dense vs Dense_C):',np.corrcoef(Lowrank_DC.flatten(),Dense_C.flatten())[0,1])
     print('Correlation(grad_dense vs dense_res):',np.corrcoef(temp1.flatten(),Dense_C_res.flatten())[0,1])
     print('Correlation(approx_dense vs Dense_C):',np.corrcoef(approx_dense.flatten(),Dense_C.flatten())[0,1])
-
+    
+def matrix_to_pmap(matrix, Nv1, Nv2, cycles):
+    """
+    Convert a matrix of scalar values into an RGB image representation.
+    
+    Parameters:
+        matrix (numpy.ndarray): 2D array of scalar values.
+        cycles (int): Number of periodic cycles for the red and green channels.
+    
+    Returns:
+        numpy.ndarray: 3D RGB array representing the matrix visualization.
+    """
+    A, B = matrix.shape
+    reshaped_columns = [np.reshape(matrix[:, i], (Nv1, Nv2)) for i in range(B)]
+    fig, axs = plt.subplots(1, B+1, figsize=(B * 3, 3))  # Adjust figsize as needed
+    for i, col in enumerate(reshaped_columns):
+        # Normalize the matrix to 0-1 range
+        normalized_matrix = (col- np.min(col)) / (np.max(col) - np.min(col))
+    
+        # Red and Green channels: Periodic mapping
+        blue_channel = normalized_matrix
+        green_channel = normalized_matrix 
+    
+        # Blue channel: Linear normalization
+        red_channel = (normalized_matrix * cycles) % 1
+    
+        # Combine channels into an RGB image
+        rgb_image = np.stack((red_channel, green_channel, blue_channel), axis=-1)
+        axs[i].imshow(rgb_image)  
+        axs[i].set_title(f'PC {i+1}')
+        axs[i].axis('off')
+    temp=np.ones((100,10))
+    for i in range(temp.shape[0]):
+        temp[i,:]=(temp.shape[0]-i)/(temp.shape[0])
+    normalized_matrix = (temp- np.min(temp)) / (np.max(temp) - np.min(temp))
+    blue_channel = normalized_matrix
+    green_channel = normalized_matrix
+    red_channel = (normalized_matrix * cycles) % 1
+    rgb_image = np.stack((red_channel, green_channel, blue_channel), axis=-1)
+    axs[-1].imshow(rgb_image)  
+    axs[-1].set_title(f'cmap')
+    axs[-1].axis('off')
+    plt.show()
 
 
