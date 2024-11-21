@@ -9,6 +9,6 @@ setup(
     long_description=open('README.md').read(),
     author = ['Aref Miri Rekavandi'],
     install_requires=[
-        "numpy","scipy","tqdm","matplotlib","scikit-imag","scikit-learn"
+        "numpy","scipy","tqdm","matplotlib","scikit-image","scikit-learn"
     ],
 )
