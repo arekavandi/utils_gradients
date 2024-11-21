@@ -1,14 +1,14 @@
 from distutils.core import setup
 
 setup(
-    name='RPCA',
+    name='utils_gradients',
     version='0.1dev',
-    packages=['RobustPCA',],
+    packages=['utils_gradients',],
     license='LICENSE.md',
-    description='Robust Pincipal Component Analysis',
+    description='Useful Functions in fMRI Data Analysis',
     long_description=open('README.md').read(),
-    author = ['Shun Chi'],
+    author = ['Aref Miri Rekavandi'],
     install_requires=[
-        "numpy","scipy","tqdm"
+        "numpy","scipy","tqdm","matplotlib"
     ],
 )
