@@ -12,6 +12,7 @@ import statistics
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import time
+from matplotlib.colors import LinearSegmentedColormap
 
 def plot_mp_distribution_from_subset(eigenvalues,sig2,start,end,rank,N):
     c_best=1
