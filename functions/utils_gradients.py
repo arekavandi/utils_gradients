@@ -114,6 +114,113 @@ def density_scatter(x,y,plot_baseline=False,plot_xy=False):
     #plt.show(block=False)
     return fig,ax
 
+def check_symmetric(a, rtol=1e-05, atol=1e-08):
+    return np.allclose(a, a.T, rtol=rtol, atol=atol)
+
+def matrix_MIGP(C, n_dim=1000, d_pca=1000, keep_mean=True):
+    """Apply incremental PCA to C
+    Inputs:
+    C (2D array) : should be wide i.e. nxN where N bigger than n
+    We pretend that the matrix C is made of column blocks, each block is
+    one 'subject', and 'time' is the column dimension.
+
+    n_dim (int)  : C is split up into nXn_dim matrices
+    n_pca (int)  : maximum number of pcs kept (set to n_dim if larger than n_dim)
+    keep_mean (bool) : keep the mean of C
+
+    Returns:
+    reduced version of C (size nxmin(n_dim,n_pca)
+    """
+    # Random order for columns of C (create a view rather than copy the data)
+
+    if keep_mean:
+        C_mean = np.mean(C, axis=0, keepdims=True)
+        print('mean shape: ',C_mean.shape)
+        #raise(Exception('Not implemented keep_mean yet!'))
+
+    if d_pca > n_dim:
+        d_pca = n_dim
+
+    print('...Starting MIGP')
+    t = timer()
+    t.tic()
+    _, N = C.shape
+    #random_idx = np.random.permutation(N)
+    #Cview = C[:, random_idx]
+    Cview = C.copy()
+    Cview=demean(Cview)
+    proj_mat=[]
+    W = None
+    for i in tqdm(range(0,N,n_dim)):
+        data = Cview[:, i:min(i+n_dim, N+1)].T  # transpose to get time as 1st dimension
+        if W is not None:
+            W = np.concatenate((W, (data)), axis=0)
+        else:
+            W = (data)
+        k = min(d_pca, n_dim)
+        _, U  = eigsh(W@W.T, k)
+
+        W = U.T@W
+        proj_mat.append(U)
+    data = W[:min(W.shape[0], d_pca), :].T
+
+    print(f'...Old matrix size : {C.shape[0]}x{C.shape[1]}')
+    print(f'...New matrix size : {data.shape[0]}x{data.shape[1]}')
+    print(f'...MIGP done in {t.toc()} secs.')
+    return data,proj_mat,C_mean
+
+def inverse_MIGP(C, proj, mean, n_dim=1000, d_pca=1000):
+    print('...Starting inverse_MIGP')
+    t = timer()
+    t.tic()
+    Cview = C.copy()
+    N=C.shape[0]
+    W = None
+    for i in tqdm(range(len(proj))):
+        if W is None:
+            data=Cview
+            dim=proj[-1*(i+1)].shape[0]
+            approx=data@proj[-1*(i+1)].T
+          
+            if len(proj)==1:
+                W=(approx)
+            else:
+                W=(approx[:,d_pca:])
+        else:
+            data=approx[:,:d_pca]
+            approx=data@proj[-1*(i+1)].T
+            if i==(len(proj)-1):
+                W=np.concatenate((approx,W), axis=1)
+            else:
+                W=np.concatenate((approx[:,d_pca:],W), axis=1)
+      
+    print(f'...Input matrix size : {C.shape[0]}x{C.shape[1]}')
+    print(f'...New matrix size : {W.shape[0]}x{W.shape[1]}')
+    print(f'...inverse_MIGP done in {t.toc()} secs.')
+    return (W)+mean
+
+# demean a matrix
+def demean(X, axis=0):
+   # print(np.mean(X, axis=axis, keepdims=True).shape)
+    return X - np.mean(X, axis=axis, keepdims=True)
+
+# Helper class for timing
+class timer:
+    def __init__(self):
+        """
+        Matlab-style timer class
+        t = timer()
+        t.tic()
+        .... do stuff
+        t.toc()
+        """
+        self._t = time.time()
+    def tic(self):
+        self._t = time.time()
+    def toc(self):
+        return f'{time.time()-self._t:.2f}'
+        
+
 def second_derivative(matrix):
     """
     Computes the second derivative of a given matrix.
