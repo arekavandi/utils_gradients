@@ -342,5 +342,14 @@ def dist_vs_dist(mask,main_comp):
     plt.ylabel('Embedding_distance')
     print(f'Dist_to_Dist Correlation:{np.corrcoef(distance_manifold,distance_embedding)[0,1]}')
 
+def dense_recon(embedded,ref_mat,low_rank,n):
+    approx_dist=np.zeros_like(ref_mat)
+    for i in range(n):
+        approx_dist+=np.abs(np.subtract.outer(embedded[:,i],embedded[:,i]))**2
+    approx_dist=(approx_dist)**0.5
+    approx_dense=np.max(approx_dist)-approx_dist
+    grad_dense=match_histograms(approx_dense, ref_mat)
+    return low_rank+grad_dense
+
 
 
