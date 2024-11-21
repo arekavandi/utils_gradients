@@ -267,6 +267,7 @@ def display_compare(temp,Dense):
     mark_inset(axs[1], axins, loc1=2, loc2=4, fc="none", ec="0.5")
 
     plt.draw()
+    plt.show()
     
 def to_index(x, y, width):
     """
