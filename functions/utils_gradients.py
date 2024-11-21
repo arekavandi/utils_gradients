@@ -351,6 +351,54 @@ def dense_recon(embedded,ref_mat,low_rank,n):
     approx_dense=np.max(approx_dist)-approx_dist
     grad_dense=match_histograms(approx_dense, ref_mat)
     return low_rank+grad_dense
+def visualize_evaluate_embedding(embedded,Lowrank_DC,Dense_C_res,Dense_C,colorcode,slice_size,Type="Manifold Learning"):
+    M2=embedded.shape[1]; Nv1=slice_size[0]; Nv2=slice_size[1]
+    display_columns(embedded, Nv1, Nv2,'viridis')
+    display_columns(embedded, Nv1, Nv2,'prism')
+    fig, axs = plt.subplots(1, 4, figsize=(13, 4))
+    axs[0].scatter(embedded[:,0],embedded[:,1],c=colorcode.T, alpha=0.15, cmap='viridis')
+    axs[0].set_title('Embedding Representation')
+    axs[0].set_xlabel('1st Component')
+    axs[0].set_ylabel('2nd Component')
+    
+    im = axs[1].imshow(np.reshape(colorcode.T,(Nv1,Nv2)),cmap='viridis')
+    #im=axs[1].imshow(index_pattren,cmap='viridis')
+    axs[1].set_title('Colormap')
+    cbar = plt.colorbar(im, ax=axs[1])
+    
+    
+    axs[2].scatter(embedded[:,0],embedded[:,1],c=intersect_visual(embedded), alpha=0.15, cmap='viridis')
+    #axs[0].scatter(embedded[:,0],embedded[:,1],c=index_pattren.flatten(), alpha=0.15, cmap='viridis')
+    axs[2].set_title('Embedding Representation')
+    axs[2].set_xlabel('1st Component')
+    axs[2].set_ylabel('2nd Component')
+    
+    
+    im=axs[3].imshow(np.reshape(intersect_visual(embedded),(Nv1,Nv2)),cmap='viridis',vmin=0, vmax=200)
+    axs[3].set_title('Localisation')
+    cbar = plt.colorbar(im, ax=axs[3])
+    plt.show()
+    
+    approx_dist=np.zeros((Nv1*Nv2,Nv1*Nv2))
+    
+    for i in range(M2):
+        approx_dist+=np.abs(np.subtract.outer(embedded[:,i],embedded[:,i]))**2
+    
+    
+    approx_dist=(approx_dist)**0.5
+    
+    approx_dense=(np.max(approx_dist)-approx_dist)
+    
+    temp1=match_histograms(approx_dense, Dense_C_res)
+    
+    print('Final Approximate DC:')
+    approx_dense=temp1+Lowrank_DC
+    
+    display_compare(approx_dense,Dense_C)
+    print(f'Quantitaive Results for {Type}:')
+    print('Correlation(low_rank_dense vs Dense_C):',np.corrcoef(Lowrank_DC.flatten(),Dense_C.flatten())[0,1])
+    print('Correlation(grad_dense vs dense_res):',np.corrcoef(temp1.flatten(),Dense_C_res.flatten())[0,1])
+    print('Correlation(approx_dense vs Dense_C):',np.corrcoef(approx_dense.flatten(),Dense_C.flatten())[0,1])
 
 
 
