@@ -596,7 +596,7 @@ def matrix_to_pmap(matrix, Nv1, Nv2, cycles):
     reshaped_columns = [np.reshape(matrix[:, i], (Nv1, Nv2)) for i in range(B)]
     fig, axs = plt.subplots(1, B, figsize=(B * 3, 3))  # Adjust figsize as needed
     for i, col in enumerate(reshaped_columns):
-        axs[i].imshow(matrix)  
+        axs[i].imshow(col,cmap=custom_cmap)  
         axs[i].set_title(f'PC {i+1}')
         axs[i].axis('off')
     plt.show()
