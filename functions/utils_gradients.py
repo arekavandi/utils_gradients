@@ -9,7 +9,7 @@ from skimage.exposure import match_histograms
 from scipy.stats import norm
 from scipy.spatial.distance import pdist, squareform
 import statistics
-
+from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 
 
 def plot_mp_distribution_from_subset(eigenvalues,sig2,start,end,rank,N):
