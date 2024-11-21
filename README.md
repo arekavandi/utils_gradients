@@ -9,17 +9,6 @@ pip install git+https://github.com/arekavandi/utils_gradients.git
 
 To use
 ```
-from RobustPCA.rpca import RobustPCA
-from RobustPCA.spcp import StablePCP
+from functions import utils_gradients 
 
-rpca = RobustPCA()
-spcp = StablePCP()
-
-rpca.fit(M)
-L = rpca.get_low_rank()
-S = rpca.get_sparse()
-
-spcp.fit(M)
-L = spcp.get_low_rank()
-S = spcp.get_sparse()
 ```
