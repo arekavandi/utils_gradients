@@ -169,6 +169,28 @@ def matrix_MIGP(C, n_dim=1000, d_pca=1000, keep_mean=True):
     print(f'...New matrix size : {data.shape[0]}x{data.shape[1]}')
     print(f'...MIGP done in {t.toc()} secs.')
     return data,proj_mat,C_mean
+    
+# demean a matrix
+def demean(X, axis=0):
+   # print(np.mean(X, axis=axis, keepdims=True).shape)
+    return X - np.mean(X, axis=axis, keepdims=True)
+
+
+# Helper class for timing
+class timer:
+    def __init__(self):
+        """
+        Matlab-style timer class
+        t = timer()
+        t.tic()
+        .... do stuff
+        t.toc()
+        """
+        self._t = time.time()
+    def tic(self):
+        self._t = time.time()
+    def toc(self):
+        return f'{time.time()-self._t:.2f}'
 
 def inverse_MIGP(C, proj, mean, n_dim=1000, d_pca=1000):
     print('...Starting inverse_MIGP')
@@ -199,27 +221,6 @@ def inverse_MIGP(C, proj, mean, n_dim=1000, d_pca=1000):
     print(f'...New matrix size : {W.shape[0]}x{W.shape[1]}')
     print(f'...inverse_MIGP done in {t.toc()} secs.')
     return (W)+mean
-
-# demean a matrix
-def demean(X, axis=0):
-   # print(np.mean(X, axis=axis, keepdims=True).shape)
-    return X - np.mean(X, axis=axis, keepdims=True)
-
-# Helper class for timing
-class timer:
-    def __init__(self):
-        """
-        Matlab-style timer class
-        t = timer()
-        t.tic()
-        .... do stuff
-        t.toc()
-        """
-        self._t = time.time()
-    def tic(self):
-        self._t = time.time()
-    def toc(self):
-        return f'{time.time()-self._t:.2f}'
         
 
 def second_derivative(matrix):
