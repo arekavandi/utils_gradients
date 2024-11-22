@@ -510,7 +510,7 @@ def visualize_evaluate_embedding(embedded,Lowrank_DC,Dense_C_res,Dense_C,colorco
     print('Correlation(grad_dense vs dense_res):',np.corrcoef(temp1.flatten(),Dense_C_res.flatten())[0,1])
     print('Correlation(approx_dense vs Dense_C):',np.corrcoef(approx_dense.flatten(),Dense_C.flatten())[0,1])
     
-def matrix_to_pmap_old(matrix, Nv1, Nv2, cycles):
+'''def matrix_to_pmap_old(matrix, Nv1, Nv2, cycles):
     """
     Convert a matrix of scalar values into an RGB image representation.
     
@@ -551,7 +551,7 @@ def matrix_to_pmap_old(matrix, Nv1, Nv2, cycles):
     axs[-1].imshow(rgb_image)  
     axs[-1].set_title(f'cmap')
     axs[-1].axis('off')
-    plt.show()
+    plt.show()'''
 def create_cyclic_hsv_colormap(cycles):
     """
     Creates a cyclic colormap based on the HSV colormap where each cycle reduces the brightness by 50%.
@@ -602,3 +602,31 @@ def matrix_to_pmap(matrix, Nv1, Nv2, cycles):
         axs[i].set_title(f'PC {i+1}')
         axs[i].axis('off')
     plt.show()
+
+def sample_rows(matrix, step):
+    """
+    Samples rows from the input matrix with a given step.
+    
+    Parameters:
+        matrix (np.ndarray): The input 2D matrix.
+        step (int): The step size for row sampling.
+        
+    Returns:
+        np.ndarray: The sampled matrix.
+    """
+    return matrix[::step]
+
+def inverse_sample(sampled_matrix, original_size, step):
+    """
+    Expands the sampled matrix to the original size by repeating rows.
+    
+    Parameters:
+        sampled_matrix (np.ndarray): The sampled matrix.
+        original_size (int): The number of rows in the original matrix.
+        step (int): The step size used for sampling.
+        
+    Returns:
+        np.ndarray: The expanded matrix with the original size.
+    """
+    repeated_rows = np.repeat(sampled_matrix, step, axis=0)
+    return repeated_rows[:original_size]
