@@ -12,7 +12,45 @@ import statistics
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import time
-from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.colors import hsv_to_rgb, LinearSegmentedColormap
+
+def create_cyclic_colormap(num_cycles, num_points=256, name='cyclic_colormap'):
+    """
+    Creates a Matplotlib colormap where the color (hue) cycles once, and brightness
+    alternates between two values.
+
+    Args:
+        num_cycles (int): Number of brightness cycles.
+        num_points (int): Number of points in the colormap.
+        name (str): Name of the colormap.
+
+    Returns:
+        LinearSegmentedColormap: A Matplotlib colormap object.
+    """
+    # Generate normalized time values
+    t = np.linspace(0, 1, num_points)
+    
+    # Hue cycles ONCE across the entire range
+    hues = t  # Linear gradient from 0 to 1 for one complete hue cycle
+    
+    # Brightness modulation: square wave alternating between 0.5 and 1
+    brightness = 0.7 + 0.3 * ((np.sin(2 * np.pi * num_cycles * t - np.pi / 2)) + 1)
+    
+    # Constant saturation
+    saturation = np.ones_like(t)
+    
+    # Combine into HSV
+    hsv = np.stack([hues, saturation, brightness], axis=1)
+    
+    # Convert HSV to RGB
+    rgb = hsv_to_rgb(hsv)
+    
+    # Ensure RGB values are within valid range [0, 1]
+    rgb = np.clip(rgb, 0, 1)
+    
+    # Create a Matplotlib colormap from the RGB values
+    cmap = LinearSegmentedColormap.from_list(name, rgb)
+    return cmap
 
 def plot_mp_distribution_from_subset(eigenvalues,sig2,start,end,rank,N):
     c_best=1
