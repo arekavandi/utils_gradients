@@ -13,6 +13,29 @@ from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import time
 from matplotlib.colors import hsv_to_rgb, LinearSegmentedColormap
+from scipy.spatial import KDTree
+
+def down_sample(data_array,k,range):
+
+    indices_picked=np.linspace(0, data_array.shape[0]-1, k, dtype=int)
+    downsampled_matrix=data_array[indices_picked,:]
+    
+    # Step 1: Build a KD-Tree
+    tree = KDTree(downsampled_matrix[:,:range])
+    
+    closest_rows = []
+    for point in data_array:
+        _,indices = tree.query(point[:range], k=1)  # Nearest neighbor query
+        closest_rows.append(indices)
+
+    return downsampled_matrix,closest_rows
+
+def up_sample(downsampled_matrix,closest_rows):
+
+    upsampled_matrix = downsampled_matrix[closest_rows]
+
+    return upsampled_matrix
+
 
 def create_cyclic_colormap(num_cycles, num_points=256, name='cyclic_colormap'):
     """
