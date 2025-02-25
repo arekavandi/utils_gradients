@@ -25,7 +25,7 @@ def down_sample(data_array,k,coordinates):
     
     closest_rows = []
     for point in coordinates:
-        _,indices = tree.query(point[:range], k=1)  # Nearest neighbor query
+        _,indices = tree.query(point, k=1)  # Nearest neighbor query
         closest_rows.append(indices)
 
     return downsampled_matrix,closest_rows
