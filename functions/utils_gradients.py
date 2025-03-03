@@ -386,7 +386,7 @@ def display_columns(matrix, Nv1, Nv2,type):
         axs[i].axis('off')
     plt.show()
 
-def display_compare(temp,Dense):
+def display_compare(temp,text1='Approx. DC',Dense, text2='DC'):
     """
     Function to visualize matrix temp and its zoomed version in comparision with actual dense connectome.
 
@@ -398,7 +398,7 @@ def display_compare(temp,Dense):
     
     im_1=axs[0].imshow(Dense, interpolation='nearest')
     fig.colorbar(im_1, ax=axs[0], orientation='vertical')
-    axs[0].set_title('DC')
+    axs[0].set_title(text2)
     axins = zoomed_inset_axes(axs[0], zoom, loc=1) # zoom = 6
     axins.imshow(Dense, interpolation="nearest",
              origin="lower")
@@ -420,7 +420,7 @@ def display_compare(temp,Dense):
 
     im_2=axs[1].imshow(temp, interpolation='nearest')
     fig.colorbar(im_2, ax=axs[1], orientation='vertical')
-    axs[1].set_title('Approx. DC')
+    axs[1].set_title(text1)
 
     axins = zoomed_inset_axes(axs[1], zoom, loc=1) # zoom = 6
     axins.imshow(temp, interpolation="nearest",
@@ -566,10 +566,14 @@ def visualize_evaluate_embedding(embedded,Lowrank_DC,Dense_C_res,Dense_C,colorco
     approx_dense=temp1+Lowrank_DC
     
     display_compare(approx_dense,Dense_C)
-    print(f'Quantitaive Results for {Type}:')
+    print(f'Quantitaive Full Corr Results for {Type}:')
     print('Correlation(low_rank_dense vs Dense_C):',np.corrcoef(Lowrank_DC.flatten(),Dense_C.flatten())[0,1])
     print('Correlation(grad_dense vs dense_res):',np.corrcoef(temp1.flatten(),Dense_C_res.flatten())[0,1])
     print('Correlation(approx_dense vs Dense_C):',np.corrcoef(approx_dense.flatten(),Dense_C.flatten())[0,1])
+    print(f'Quantitaive Half Corr Results for {Type}:')
+    print('Correlation(low_rank_dense vs Dense_C):',np.corrcoef(Lowrank_DC[np.triu_indices(Lowrank_DC.shape[0],k=1)],Dense_C[np.triu_indices(Dense_C.shape[0],k=1)])[0,1])
+    print('Correlation(grad_dense vs dense_res):',np.corrcoef(temp1[np.triu_indices(temp1.shape[0],k=1)],Dense_C_res[np.triu_indices(Dense_C_res.shape[0],k=1)])[0,1])
+    print('Correlation(approx_dense vs Dense_C):',np.corrcoef(approx_dense[np.triu_indices(approx_dense.shape[0],k=1)],Dense_C[np.triu_indices(Dense_C.shape[0],k=1)])[0,1])
     
 '''def matrix_to_pmap_old(matrix, Nv1, Nv2, cycles):
     """
