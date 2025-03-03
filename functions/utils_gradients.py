@@ -386,7 +386,7 @@ def display_columns(matrix, Nv1, Nv2,type):
         axs[i].axis('off')
     plt.show()
 
-def display_compare(temp,text1='Approx. DC',Dense, text2='DC'):
+def display_compare(temp,Dense,text1='Approx. DC',text2='DC'):
     """
     Function to visualize matrix temp and its zoomed version in comparision with actual dense connectome.
 
