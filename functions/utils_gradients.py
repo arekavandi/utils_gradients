@@ -396,11 +396,11 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC'):
     zoom=3
     fig, axs = plt.subplots(1, 2, figsize=(7, 3))
     
-    im_1=axs[0].imshow(Dense, interpolation='nearest')
+    im_1=axs[0].imshow(Dense)
     fig.colorbar(im_1, ax=axs[0], orientation='vertical')
     axs[0].set_title(text2)
     axins = zoomed_inset_axes(axs[0], zoom, loc=1) # zoom = 6
-    axins.imshow(Dense, interpolation="nearest",
+    axins.imshow(Dense,
              origin="lower")
 
     # sub region of the original image
@@ -418,12 +418,12 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC'):
     plt.draw()
   
 
-    im_2=axs[1].imshow(temp, interpolation='nearest')
+    im_2=axs[1].imshow(temp)
     fig.colorbar(im_2, ax=axs[1], orientation='vertical')
     axs[1].set_title(text1)
 
     axins = zoomed_inset_axes(axs[1], zoom, loc=1) # zoom = 6
-    axins.imshow(temp, interpolation="nearest",
+    axins.imshow(temp,
              origin="lower")
     
     axins.set_xlim(x1, x2)
