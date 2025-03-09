@@ -159,7 +159,7 @@ def plot_mp_distribution_from_subset(eigenvalues,sig2,start,end,rank,N):
     plt.grid(True)
     plt.show()
 
-def density_scatter(x,tx,y,ty,plot_baseline=False,plot_xy=False):
+def density_scatter(x,y,tx,ty,plot_baseline=False,plot_xy=False):
     xy = np.vstack([x,y])
     z = gaussian_kde(xy)(xy)
     
