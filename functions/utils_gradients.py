@@ -582,10 +582,9 @@ def visualize_evaluate_embedding(embedded,Lowrank_DC,Dense_C_res,Dense_C,colorco
     print('MSE (grad_dense vs dense_res):',np.mean((Dense_C_res - temp1) ** 2))
     print('MSE (approx_dense vs Dense_C):',np.mean((Dense_C - approx_dense) ** 2))
     print(f'Quantitaive Half MSE Results for {Type}:')
-    print('Correlation(low_rank_dense vs Dense_C):',np.corrcoef(Lowrank_DC[np.triu_indices(Lowrank_DC.shape[0],k=1)],Dense_C[np.triu_indices(Dense_C.shape[0],k=1)])[0,1])
-    print('MSE (low_rank_dense vs Dense_C):',np.mean((Lowrank_DC[np.triu_indices(Lowrank_DC.shape[0],k=1)]] - Dense_C[np.triu_indices(Lowrank_DC.shape[0],k=1)]]) ** 2))
-    print('MSE (grad_dense vs dense_res):',np.mean((Dense_C_res[np.triu_indices(Lowrank_DC.shape[0],k=1)]] - temp1[np.triu_indices(Lowrank_DC.shape[0],k=1)]]) ** 2))
-    print('MSE (approx_dense vs Dense_C):',np.mean((Dense_C[np.triu_indices(Lowrank_DC.shape[0],k=1)]] - approx_dense[np.triu_indices(Lowrank_DC.shape[0],k=1)]]) ** 2))
+    print('MSE (low_rank_dense vs Dense_C):',np.mean((Lowrank_DC[np.triu_indices(Lowrank_DC.shape[0],k=1)] - Dense_C[np.triu_indices(Lowrank_DC.shape[0],k=1)]) ** 2))
+    print('MSE (grad_dense vs dense_res):',np.mean((Dense_C_res[np.triu_indices(Lowrank_DC.shape[0],k=1)] - temp1[np.triu_indices(Lowrank_DC.shape[0],k=1)]) ** 2))
+    print('MSE (approx_dense vs Dense_C):',np.mean((Dense_C[np.triu_indices(Lowrank_DC.shape[0],k=1)] - approx_dense[np.triu_indices(Lowrank_DC.shape[0],k=1)]) ** 2))
     
 '''def matrix_to_pmap_old(matrix, Nv1, Nv2, cycles):
     """
