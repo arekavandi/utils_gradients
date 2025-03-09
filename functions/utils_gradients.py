@@ -586,7 +586,7 @@ def visualize_evaluate_embedding(embedded,Lowrank_DC,Dense_C_res,Dense_C,colorco
     print('MSE (grad_dense vs dense_res):',np.mean((Dense_C_res[np.triu_indices(Lowrank_DC.shape[0],k=1)] - temp1[np.triu_indices(Lowrank_DC.shape[0],k=1)]) ** 2))
     print('MSE (approx_dense vs Dense_C):',np.mean((Dense_C[np.triu_indices(Lowrank_DC.shape[0],k=1)] - approx_dense[np.triu_indices(Lowrank_DC.shape[0],k=1)]) ** 2))
 
-return temp1, approx_dense
+    return temp1, approx_dense
     
 '''def matrix_to_pmap_old(matrix, Nv1, Nv2, cycles):
     """
