@@ -566,7 +566,8 @@ def visualize_evaluate_embedding(embedded,Lowrank_DC,Dense_C_res,Dense_C,colorco
     
     print('Final Approximate DC:')
     approx_dense=temp1+Lowrank_DC
-    
+
+    display_compare(Lowrank_DC,Dense_C,text1='Low rank',text2='DC')
     display_compare(approx_dense,Dense_C)
     display_compare(temp1,Dense_C_res,text1='Approx. Grad',text2='DC_res')
     
