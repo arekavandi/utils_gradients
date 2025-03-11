@@ -15,20 +15,17 @@ import time
 from matplotlib.colors import hsv_to_rgb, LinearSegmentedColormap
 from scipy.spatial import KDTree
 
-def down_sample(data_array,k,coordinates):
+def down_sample(data_array,factor,nn,coordinates):
 
-    indices_picked=np.linspace(0, data_array.shape[0]-1, k, dtype=int)
+    indices_picked=np.linspace(0, data_array.shape[0]-1, int(factor*(data_array.shape[0])), dtype=int)
     downsampled_matrix=data_array[indices_picked,:]
     
     # Step 1: Build a KD-Tree
     tree = KDTree(coordinates[indices_picked])
     
-    closest_rows = []
-    for point in coordinates:
-        _,indices = tree.query(point, k=1)  # Nearest neighbor query
-        closest_rows.append(indices)
+    _,closest_rows = tree.query(coordinates, k=nn)  # Nearest neighbor query
 
-    return downsampled_matrix,closest_rows
+    return downsampled_matrix,closest_rows,indices_picked
 
 def up_sample(downsampled_matrix,closest_rows):
 
