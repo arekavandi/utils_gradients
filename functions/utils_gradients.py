@@ -28,6 +28,7 @@ def down_sample(data_array,factor,nn,coordinates):
     return downsampled_matrix,closest_rows,indices_picked
 
 def up_sample(downsampled_matrix,closest_rows):
+    upsampled_matrix=np.zeros((closest_rows.shape[0],downsampled_matrix.shape[1]))
     for i in range(closest_rows.shape[1]):
         upsampled_matrix += (1/closest_rows.shape[1])*downsampled_matrix[closest_rows[:,i]]
 
