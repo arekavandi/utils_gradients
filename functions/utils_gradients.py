@@ -14,9 +14,10 @@ from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import time
 from matplotlib.colors import hsv_to_rgb, LinearSegmentedColormap
 from scipy.spatial import KDTree
+import random
 
 def down_sample(data_array,factor,nn,coordinates):
-    numbers = list(range(0, data_array.shape[0]))
+    numbers = random.shuffle(np.linspace(0, data_array.shape[0]-1, dtype=int))
     pointer=np.linspace(0, data_array.shape[0]-1, int(factor*(data_array.shape[0])), dtype=int)
     indices_picked=numbers[pointer]
     downsampled_matrix=data_array[indices_picked,:]
