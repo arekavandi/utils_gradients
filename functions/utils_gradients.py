@@ -21,6 +21,7 @@ def down_sample(data_array,factor,nn,coordinates):
     random.shuffle(numbers)  # Shuffle in place
     pointer=np.linspace(0, data_array.shape[0]-1, int(factor*(data_array.shape[0])), dtype=int)
     indices_picked=numbers[pointer]
+    indices_picked=np.sort(indices_picked)
     downsampled_matrix=data_array[indices_picked,:]
     
     # Step 1: Build a KD-Tree
