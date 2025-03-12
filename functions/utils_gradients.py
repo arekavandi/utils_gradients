@@ -17,7 +17,8 @@ from scipy.spatial import KDTree
 import random
 
 def down_sample(data_array,factor,nn,coordinates):
-    numbers = random.shuffle(np.linspace(0, data_array.shape[0]-1, dtype=int))
+    numbers = np.linspace(0, data_array.shape[0] - 1, num=data_array.shape[0], dtype=int)  # Create index array
+    random.shuffle(numbers)  # Shuffle in place
     pointer=np.linspace(0, data_array.shape[0]-1, int(factor*(data_array.shape[0])), dtype=int)
     indices_picked=numbers[pointer]
     downsampled_matrix=data_array[indices_picked,:]
