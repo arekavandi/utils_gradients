@@ -17,13 +17,13 @@ from scipy.spatial import KDTree
 import random
 
 def down_sample(data_array,factor,nn,coordinates, closest_rows=None, indices_picked=None):
-    if not indices_picked.any():
+    if indices_picked is None:
         numbers = np.linspace(0, data_array.shape[0] - 1, num=data_array.shape[0], dtype=int)  # Create index array
         random.shuffle(numbers)  # Shuffle in place
         pointer=np.linspace(0, data_array.shape[0]-1, int(factor*(data_array.shape[0])), dtype=int)
         indices_picked=numbers[pointer]
         indices_picked=np.sort(indices_picked)
-    if not closest_rows.any():
+    if not closest_rows is None:
         # Step 1: Build a KD-Tree
         tree = KDTree(coordinates[indices_picked])
         _,closest_rows = tree.query(coordinates, k=nn)  # Nearest neighbor query
