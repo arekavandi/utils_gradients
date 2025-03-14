@@ -23,7 +23,7 @@ def down_sample(data_array,factor,nn,coordinates, closest_rows=None, indices_pic
         pointer=np.linspace(0, data_array.shape[0]-1, int(factor*(data_array.shape[0])), dtype=int)
         indices_picked=numbers[pointer]
         indices_picked=np.sort(indices_picked)
-    if not closest_rows is None:
+    if closest_rows is None:
         # Step 1: Build a KD-Tree
         tree = KDTree(coordinates[indices_picked])
         _,closest_rows = tree.query(coordinates, k=nn)  # Nearest neighbor query
