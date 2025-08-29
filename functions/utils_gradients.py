@@ -400,7 +400,7 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC'):
     Just the plot.
     """
     zoom=3
-    fig, axs = plt.subplots(1, 2, figsize=(7, 3))
+    fig, axs = plt.subplots(1, 2, figsize=(8, 4))
     
     im_1=axs[0].imshow(Dense, vmin=-1, vmax=1)
     fig.colorbar(im_1, ax=axs[0], orientation='vertical')
