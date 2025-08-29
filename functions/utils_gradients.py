@@ -388,6 +388,8 @@ def display_columns(matrix, Nv1, Nv2,type):
     for i, col in enumerate(reshaped_columns):
         axs[i].imshow(col, cmap=type)  # Change the colormap if needed
         axs[i].set_title(f'PC {i+1}')
+        axs[i].set_xlabel('X')
+        axs[i].set_ylabel('Y')
         axs[i].axis('off')
     plt.show()
 
