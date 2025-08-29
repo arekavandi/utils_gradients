@@ -401,7 +401,7 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC'):
     zoom=3
     fig, axs = plt.subplots(1, 2, figsize=(7, 3))
     
-    im_1=axs[0].imshow(Dense)
+    im_1=axs[0].imshow(Dense, vmin=-1, vmax=1)
     fig.colorbar(im_1, ax=axs[0], orientation='vertical')
     axs[0].set_title(text2)
     axins = zoomed_inset_axes(axs[0], zoom, loc=1) # zoom = 6
@@ -423,7 +423,7 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC'):
     plt.draw()
   
 
-    im_2=axs[1].imshow(temp)
+    im_2=axs[1].imshow(temp, vmin=-1, vmax=1)
     fig.colorbar(im_2, ax=axs[1], orientation='vertical')
     axs[1].set_title(text1)
 
