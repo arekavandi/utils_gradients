@@ -402,7 +402,7 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC',axis='on'):
     Returns:
     Just the plot.
     """
-    zoom=3
+    zoom=4
     fig, axs = plt.subplots(1, 3, figsize=(8, 4))
     if axis=='off':
         for ax in axs:
@@ -452,7 +452,24 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC',axis='on'):
 
     im_3=axs[2].imshow(np.abs(Dense-temp))
     fig.colorbar(im_3, ax=axs[2], orientation='vertical', shrink=0.5)
-    axs[2].set_title('Error')
+    axs[2].set_title('|Error|')
+
+    axins = zoomed_inset_axes(axs[2], zoom, loc=1) # zoom = 6
+    axins.imshow(np.abs(Dense-temp),
+             origin="lower")
+
+    # sub region of the original image
+    x1, x2, y1, y2 = 300, 100, 100, 300
+    axins.set_xlim(x1, x2)
+    axins.set_ylim(y1, y2)
+
+    plt.xticks(visible=False)
+    plt.yticks(visible=False)
+
+    # draw a bbox of the region of the inset axes in the parent axes and
+    # connecting lines between the bbox and the inset axes area'''
+    mark_inset(axs[2], axins, loc1=2, loc2=4, fc="none", ec="0.5")
+    plt.draw()
     plt.show()
     
 def to_index(x, y, width):
