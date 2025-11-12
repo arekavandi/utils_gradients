@@ -395,7 +395,7 @@ def display_columns(matrix, Nv1, Nv2,type,axis='on'):
         axs[i].set_ylabel('Y')
     plt.show()
 
-def display_compare(temp,Dense,text1='Approx. DC',text2='DC'):
+def display_compare(temp,Dense,text1='Approx. DC',text2='DC',axis='on'):
     """
     Function to visualize matrix temp and its zoomed version in comparision with actual dense connectome.
 
@@ -403,7 +403,10 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC'):
     Just the plot.
     """
     zoom=3
-    fig, axs = plt.subplots(1, 2, figsize=(8, 4))
+    fig, axs = plt.subplots(1, 3, figsize=(8, 4))
+    if axis=='off':
+        for ax in axs:
+            ax.axis('off')
     
     im_1=axs[0].imshow(Dense, vmin=-1, vmax=1)
     fig.colorbar(im_1, ax=axs[0], orientation='vertical')
@@ -446,6 +449,8 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC'):
     mark_inset(axs[1], axins, loc1=2, loc2=4, fc="none", ec="0.5")
 
     plt.draw()
+
+    im_3=axs[2].imshow(Dense-temp, vmin=-0.1, vmax=0.1)
     plt.show()
     
 def to_index(x, y, width):
