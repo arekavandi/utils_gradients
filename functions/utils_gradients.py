@@ -450,9 +450,9 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC',axis='on'):
 
     plt.draw()
 
-    im_3=axs[2].imshow(Dense-temp, vmin=-0.1, vmax=0.1)
+    im_3=axs[2].imshow(np.abs(Dense-temp))
     fig.colorbar(im_3, ax=axs[2], orientation='vertical')
-    axs[2].set_title('Difference')
+    axs[2].set_title('Error')
     plt.show()
     
 def to_index(x, y, width):
