@@ -409,7 +409,7 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC',axis='on'):
             ax.axis('off')
     
     im_1=axs[0].imshow(Dense, vmin=-1, vmax=1)
-    fig.colorbar(im_1, ax=axs[0], orientation='vertical')
+    fig.colorbar(im_1, ax=axs[0], orientation='vertical', shrink=0.5)
     axs[0].set_title(text2)
     axins = zoomed_inset_axes(axs[0], zoom, loc=1) # zoom = 6
     axins.imshow(Dense,
@@ -431,7 +431,7 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC',axis='on'):
   
 
     im_2=axs[1].imshow(temp, vmin=-1, vmax=1)
-    fig.colorbar(im_2, ax=axs[1], orientation='vertical')
+    fig.colorbar(im_2, ax=axs[1], orientation='vertical', shrink=0.5)
     axs[1].set_title(text1)
 
     axins = zoomed_inset_axes(axs[1], zoom, loc=1) # zoom = 6
@@ -451,7 +451,7 @@ def display_compare(temp,Dense,text1='Approx. DC',text2='DC',axis='on'):
     plt.draw()
 
     im_3=axs[2].imshow(np.abs(Dense-temp))
-    fig.colorbar(im_3, ax=axs[2], orientation='vertical')
+    fig.colorbar(im_3, ax=axs[2], orientation='vertical', shrink=0.5)
     axs[2].set_title('Error')
     plt.show()
     
