@@ -369,7 +369,7 @@ def compute_distance_matrix(data):
     
     return distance_matrix.flatten()
 
-def display_columns(matrix, Nv1, Nv2,type):
+def display_columns(matrix, Nv1, Nv2,type,axis='on'):
     """
     Function to visualize columns of a matrix in m separate plots in with shape of Nv1*Nv2 image.
 
@@ -385,6 +385,9 @@ def display_columns(matrix, Nv1, Nv2,type):
     reshaped_columns = [np.reshape(matrix[:, i], (Nv1, Nv2)) for i in range(B)]
     
     fig, axs = plt.subplots(1, B, figsize=(B * 3, 3))  # Adjust figsize as needed
+    if axis=='off':
+        for ax in axs:
+            ax.axis('off')
     for i, col in enumerate(reshaped_columns):
         axs[i].imshow(col, cmap=type)  # Change the colormap if needed
         axs[i].set_title(f'PC {i+1}')
