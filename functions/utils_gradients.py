@@ -16,9 +16,9 @@ from matplotlib.colors import hsv_to_rgb, LinearSegmentedColormap
 from scipy.spatial import KDTree
 import random
 
-def get_random_numeric_dtst_files(directory, N):
-    # Get a list of all .dtst files with only numeric names
-    dtst_files = [f for f in os.listdir(directory) if f[:].isdigit()]
+def get_random_files(directory, N):
+
+    dtst_files = [f for f in os.listdir(directory)]
 
     # Select N random files (ensure we don't exceed available files)
     selected_files = random.sample(dtst_files, min(N, len(dtst_files)))
