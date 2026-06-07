@@ -1,4 +1,4 @@
-# Authors: Shun Chi (shunchi100@gmail.com)
+# Authors: Aref Miri Rekavandu
 
 import numpy as np
 from tqdm import tqdm
@@ -16,6 +16,15 @@ from matplotlib.colors import hsv_to_rgb, LinearSegmentedColormap
 from scipy.spatial import KDTree
 import random
 
+def get_random_numeric_dtst_files(directory, N):
+    # Get a list of all .dtst files with only numeric names
+    dtst_files = [f for f in os.listdir(directory) if f[:].isdigit()]
+
+    # Select N random files (ensure we don't exceed available files)
+    selected_files = random.sample(dtst_files, min(N, len(dtst_files)))
+
+    return selected_files
+    
 def down_sample(data_array,factor,nn,coordinates, closest_rows=None, indices_picked=None):
     if indices_picked is None:
         numbers = np.linspace(0, data_array.shape[0] - 1, num=data_array.shape[0], dtype=int)  # Create index array
