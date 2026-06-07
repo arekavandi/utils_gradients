@@ -17,11 +17,15 @@ from matplotlib.colors import hsv_to_rgb, LinearSegmentedColormap
 from scipy.spatial import KDTree
 import random
 
-def get_random_files(directory, N=None):
+def get_random_files(directory, N = None):
 
     dtst_files = os.listdir(directory)
     if N is None:
         N = len(dtst_files)
+        
+    print("N =", N, type(N))
+    print("len =", len(dtst_files), type(len(dtst_files)))
+
     # Select N random files (ensure we don't exceed available files)
     selected_files = random.sample(dtst_files, min(N, len(dtst_files)))
 
