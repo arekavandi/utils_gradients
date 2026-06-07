@@ -1,5 +1,6 @@
 # Authors: Aref Miri Rekavandu
 
+import os
 import numpy as np
 from tqdm import tqdm
 from scipy.interpolate import interp1d
