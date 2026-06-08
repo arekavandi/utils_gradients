@@ -15,6 +15,7 @@ from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import time
 from matplotlib.colors import hsv_to_rgb, LinearSegmentedColormap
 from scipy.spatial import KDTree
+from scipy.sparse.linalg import eigsh
 import random
 
 def add_zoom(ax, img, zoom=6):
