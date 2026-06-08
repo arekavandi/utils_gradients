@@ -17,6 +17,22 @@ from matplotlib.colors import hsv_to_rgb, LinearSegmentedColormap
 from scipy.spatial import KDTree
 import random
 
+def add_zoom(ax, img, zoom=6):
+    """Add zoomed inset to an axis."""
+    x1, x2, y1, y2 = 1000, 2000, 2000, 1000
+    region=(x1, x2, y1, y2)
+    # Create zoomed inset
+    axins = zoomed_inset_axes(ax, zoom, loc=3)
+    axins.imshow(img, vmin=ax.images[0].get_clim()[0], vmax=ax.images[0].get_clim()[1])
+    
+    axins.set_xlim(x1, x2)
+    axins.set_ylim(y1, y2)  # invert y-axis
+    axins.set_xticks([])
+    axins.set_yticks([])
+    
+    # Mark the area on the main plot
+    mark_inset(ax, axins, loc1=4, loc2=2, fc="none", ec="red", lw=1)
+
 def get_random_files(directory, N = None):
 
     dtst_files = os.listdir(directory)
