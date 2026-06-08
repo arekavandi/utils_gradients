@@ -1,4 +1,4 @@
-# Authors: Aref Miri Rekavandu
+# Authors: Aref Miri Rekavandi
 
 import os
 import numpy as np
