@@ -263,13 +263,17 @@ def matrix_MIGP(C, n_dim=1000, d_pca=1000, keep_mean=True):
     print(f'...New matrix size : {data.shape[0]}x{data.shape[1]}')
     print(f'...MIGP done in {t.toc()} secs.')
     return data,proj_mat,C_mean
-    
+
 # demean a matrix
 def demean(X, axis=0):
    # print(np.mean(X, axis=axis, keepdims=True).shape)
     return X - np.mean(X, axis=axis, keepdims=True)
 
-
+def timedemean(matrix):
+    # Calculate the mean of each column
+    column_means = np.mean(matrix, axis=1)
+    return (matrix.T - column_means).T
+    
 # Helper class for timing
 class timer:
     def __init__(self):
